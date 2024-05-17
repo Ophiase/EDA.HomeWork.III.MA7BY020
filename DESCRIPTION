@@ -2,7 +2,7 @@ Package: EDA.HomeWork.III.MA7BY020
 Title: EDA HomeWork III
 Version: 0.0.0.9000
 Authors@R: 
-    person("Ophiase", "", , "", role = c("aut", "cre"),
+    person("John", "Doe", , "john@doe.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: This package doe nothing.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
@@ -10,3 +10,6 @@ License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
