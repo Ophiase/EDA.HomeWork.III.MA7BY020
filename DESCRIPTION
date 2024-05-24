@@ -17,5 +17,6 @@ Imports:
   FactoMineR,
   tibble (>= 3.0.0),
   generics (>= 0.0.2),
-  tidyr (>= 1.0.0)
+  tidyr (>= 1.0.0),
+  CCA
 
