@@ -2,10 +2,12 @@
 
 Exploratory data analysis howework at University.
 
-We implement for CA, PCA, CCA the following methods :
+We implement for CA, PCA, CCA the following methods/objects :
 - augment
 - glance
 - tidy
+- ggplot
+- autoplot
 
 ## Execution
 
