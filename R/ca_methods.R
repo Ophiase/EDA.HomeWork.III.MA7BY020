@@ -6,32 +6,65 @@
 #'
 #' @return A `tibble` with columns containing the original data and additional columns with the row and column coordinates.
 #' @export
-#'
-#' @examples
-#' library(FactoMineR)
-#' data(hair)
-#' hair_ca <- CA(hair$hair, ncp = 5)
-#' augment(hair_ca, hair$hair)
 augment.CA <- function(x, data, ...) {
-  #
-  row_coords <- x$row$coord # nolint
-  col_coords <- x$col$coord
+  # candidates to add :
+  #   x$row
+  #     x$row$coord
+  #     x$row$cos2
+  #     x$row$contrib
+  #     x$row$inertia (list)
+  #   x$call
+  #     x$call$X
+  #     x$call$marge.row (list)
+  #     x$call$row.w (list)
+  #     x$call$Xtot 150x4
 
-  row_data <- cbind(data, row_coords)
-  col_data <- cbind(t(data), col_coords)
+  # r$row
+  if (!is.null(x$row)) {
+    data$coord <- unlist(x$row$coord)
+    data$cos2 <- unlist(x$row$cos2)
+    data$contrib <- unlist(x$row$contrib)
+    data$inertia <- unlist(x$row$inertia)
+  }
 
-  # Add unique column names
-  colnames(row_data) <- c(
-    paste0("V", seq_len(ncol(data))),
-    paste0("Dim", seq_len(ncol(row_coords)))
-  )
-  colnames(col_data) <- c(
-    paste0("V", seq_len(nrow(data))),
-    paste0("Dim", seq_len(ncol(col_coords)))
-  )
+  # x$call
+  if (!is.null(x$call)) {
+    if (!is.null(x$call$X)) {
+      data$X <- x$call$X
+    }
+    if (!is.null(x$call$marge.row)) {
+      data$marge.row <- unlist(x$call$marge.row)
+    }
+    if (!is.null(x$call$row.w)) {
+      data$row.w <- unlist(x$call$row.w)
+    }
+    if (!is.null(x$call$Xtot)) {
+      data$Xtot <- x$call$Xtot
+    }
+  }
 
-  list(
-    row = as_tibble(row_data),
-    col = as_tibble(col_data)
-  )
+  return(data)
 }
+
+
+
+# row_coords <- x$row$coord
+# col_coords <- x$col$coord
+
+# row_data <- cbind(data, row_coords)
+# col_data <- cbind(t(data), col_coords)
+
+# # Add unique column names
+# colnames(row_data) <- c(
+#   paste0("V", seq_len(ncol(data))),
+#   paste0("Dim", seq_len(ncol(row_coords)))
+# )
+# colnames(col_data) <- c(
+#   paste0("V", seq_len(nrow(data))),
+#   paste0("Dim", seq_len(ncol(col_coords)))
+# )
+
+# list(
+#   row = as_tibble(row_data),
+#   col = as_tibble(col_data)
+# )

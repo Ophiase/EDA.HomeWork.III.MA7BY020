@@ -6,7 +6,7 @@
 # * https://r-pkgs.org/testing-design.html#sec-tests-files-overview
 # * https://testthat.r-lib.org/articles/special-files.html
 
-library(testhat)
-library(EDA.HomeWork.III.MA7BY020)
+library("testthat")
+library("EDA.HomeWork.III.MA7BY020")
 
 test_check("EDA.HomeWork.III.MA7BY020")
