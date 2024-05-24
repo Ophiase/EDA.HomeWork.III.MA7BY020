@@ -1,9 +1,3 @@
-#' @importFrom generics augment
-#' @importFrom FactoMineR CA
-#' @importFrom tibble as_tibble
-#' @export
-generics::augment
-
 #' Augment data with information from a CA object
 #'
 #' @param x An object of class `CA` from the FactoMineR package.
@@ -52,4 +46,3 @@ augment.CA <- function(x, data, ...) {
 
   return(data)
 }
-
