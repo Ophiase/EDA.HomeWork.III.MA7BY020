@@ -13,3 +13,9 @@ RoxygenNote: 7.3.1
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Imports:
+  FactoMineR,
+  tibble (>= 3.0.0),
+  generics (>= 0.0.2),
+  tidyr (>= 1.0.0)
+
