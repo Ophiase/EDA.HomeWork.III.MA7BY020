@@ -1,10 +1,11 @@
-sep <- function() {
-  cat("------------------------------------------------------------\n")
-}
-
 test_that("augment.CA works correctly", {
+  sep <- function() {
+    cat("------------------------------------------------------------\n")
+  }
+
+  print(random_method())
+
   library(FactoMineR)
-  library("EDA.HomeWork.III.MA7BY020")
 
   cat("Dataset : Iris\n")
   sep()

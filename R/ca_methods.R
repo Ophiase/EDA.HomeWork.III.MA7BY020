@@ -1,3 +1,13 @@
+#' @importFrom generics augment
+#' @importFrom FactoMineR CA
+#' @importFrom tibble as_tibble
+#' @export
+generics::augment
+
+random_method <- function() {
+  return("hello world");
+}
+
 #' Augment data with information from a CA object
 #'
 #' @param x An object of class `CA` from the FactoMineR package.
@@ -6,6 +16,8 @@
 #'
 #' @return A `tibble` with columns containing the original data and additional columns with the row and column coordinates.
 #' @export
+#' @seealso [augment()]
+#' @family CA augment
 augment.CA <- function(x, data, ...) {
   # candidates to add :
   #   x$row
@@ -46,25 +58,3 @@ augment.CA <- function(x, data, ...) {
   return(data)
 }
 
-
-
-# row_coords <- x$row$coord
-# col_coords <- x$col$coord
-
-# row_data <- cbind(data, row_coords)
-# col_data <- cbind(t(data), col_coords)
-
-# # Add unique column names
-# colnames(row_data) <- c(
-#   paste0("V", seq_len(ncol(data))),
-#   paste0("Dim", seq_len(ncol(row_coords)))
-# )
-# colnames(col_data) <- c(
-#   paste0("V", seq_len(nrow(data))),
-#   paste0("Dim", seq_len(ncol(col_coords)))
-# )
-
-# list(
-#   row = as_tibble(row_data),
-#   col = as_tibble(col_data)
-# )
