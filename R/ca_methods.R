@@ -1,3 +1,4 @@
+
 #' Augment data with information from a CA object
 #'
 #' @param x An object of class `CA` from the FactoMineR package.

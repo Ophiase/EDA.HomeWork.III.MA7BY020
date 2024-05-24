@@ -2,5 +2,6 @@
 
 export(augment)
 importFrom(FactoMineR,CA)
+importFrom(FactoMineR,MCA)
 importFrom(generics,augment)
 importFrom(tibble,as_tibble)
