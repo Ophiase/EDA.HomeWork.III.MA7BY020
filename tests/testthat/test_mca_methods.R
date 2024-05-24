@@ -10,5 +10,7 @@ test_that("augment.MCA works correctly", {
 
   augmented <- augment(res_mca, poison)
 
-  print(names(augmented))
+  # print(names(augmented))
+  expect_type(augmented, "list")
+  expect_length(augmented, 21)
 })
