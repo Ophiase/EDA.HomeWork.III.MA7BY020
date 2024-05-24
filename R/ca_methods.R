@@ -6,6 +6,8 @@
 #' @param ... Additional arguments (not used).
 #'
 #' @return A `tibble` with columns containing the original data and additional columns with the row and column coordinates.
+#' @export augment CA
+#' @export augment
 augment.CA <- function(x, data, ...) {
   # candidates to add :
   #   x$row
@@ -14,7 +16,6 @@ augment.CA <- function(x, data, ...) {
   #     x$row$contrib
   #     x$row$inertia (list)
   #   x$call
-  #     x$call$X
   #     x$call$marge.row (list)
   #     x$call$row.w (list)
   #     x$call$Xtot 150x4
@@ -31,9 +32,6 @@ augment.CA <- function(x, data, ...) {
 
   # x$call
   if (!is.null(x$call)) {
-    if (!is.null(x$call$X)) {
-      data$.X <- x$call$X
-    }
     if (!is.null(x$call$marge.row)) {
       data$.marge.row <- unlist(x$call$marge.row)
     }

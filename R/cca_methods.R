@@ -6,6 +6,9 @@
 #' @param ... Additional arguments (not used).
 #'
 #' @return A `tibble` with columns containing the original data and additional columns with the row and column coordinates.
+#' @export augment cca
+#' @export augment
+#' 
 augment.cca <- function(x, data, ...) {
   # candidates to add :
 
