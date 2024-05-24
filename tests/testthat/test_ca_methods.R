@@ -32,7 +32,7 @@ test_that("augment.CA works correctly", {
     sep()
   }
 
-  # augmented <- augment(iris_ca, iris_df)
+  augmented <- augment(iris_ca, iris_df)
   if (VERBOSE) {
     cat("Augmented IRIS\n")
     print(names(augmented))
@@ -40,8 +40,8 @@ test_that("augment.CA works correctly", {
   }
 
   # # Check that the output is a list with two elements
-  # expect_type(augmented, "list")
-  # expect_length(augmented, 12)
+  expect_type(augmented, "list")
+  expect_length(augmented, 11)
 
   # # # Check the row data
   # expect_s3_class(augmented$row, "tbl")
