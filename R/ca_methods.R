@@ -4,10 +4,6 @@
 #' @export
 generics::augment
 
-random_method <- function() {
-  return("hello world")
-}
-
 #' Augment data with information from a CA object
 #'
 #' @param x An object of class `CA` from the FactoMineR package.
@@ -15,9 +11,6 @@ random_method <- function() {
 #' @param ... Additional arguments (not used).
 #'
 #' @return A `tibble` with columns containing the original data and additional columns with the row and column coordinates.
-#' @export
-#' @seealso [augment()]
-#' @family CA augment
 augment.CA <- function(x, data, ...) {
   # candidates to add :
   #   x$row
@@ -30,6 +23,8 @@ augment.CA <- function(x, data, ...) {
   #     x$call$marge.row (list)
   #     x$call$row.w (list)
   #     x$call$Xtot 150x4
+
+  data <- as_tibble(data)
 
   # r$row
   if (!is.null(x$row)) {

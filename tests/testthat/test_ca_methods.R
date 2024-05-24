@@ -2,9 +2,6 @@ test_that("augment.CA works correctly", {
   sep <- function() {
     cat("------------------------------------------------------------\n")
   }
-
-  print(random_method())
-
   library(FactoMineR)
 
   cat("Dataset : Iris\n")

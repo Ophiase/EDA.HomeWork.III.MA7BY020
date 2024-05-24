@@ -4,7 +4,7 @@
 \alias{augment.CA}
 \title{Augment data with information from a CA object}
 \usage{
-augment.CA(x, data, ...)
+\method{augment}{CA}(x, data, ...)
 }
 \arguments{
 \item{x}{An object of class \code{CA} from the FactoMineR package.}
