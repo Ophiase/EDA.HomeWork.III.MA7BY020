@@ -1,24 +1,27 @@
 source("../utils.R", local=TRUE)
 
-test_that("augment.cc works correctly", {
-  require(CCA)
-  data(nutrimouse)
-  
-  res <- list(X = NULL, Y = NULL)
-  res$X <- as.matrix(nutrimouse$gene[,1:10])
-  res$Y <- as.matrix(nutrimouse$lipid)
-  
-  res_cc <- cc(res$X, res$Y)
+test_that("augment.cca works correctly", {
+  VERBOSE = FALSE
+  require(vegan)
+  data(varechem)
 
-  # print(dim(res$X))
-  # print(dim(res$Y))
-  # print(dim(res_cc$scores$xscores))
-  # print(dim(res_cc$scores$yscores))
+  X <- varechem[, 1:7]
+  Y <- varechem[, 8:14]
 
-  res_augmented <- augment.cc(res_cc, res)
+  if (VERBOSE) {
+    print(names(X))
+    print(names(Y))
+  }
+
+  res_cca <- cca(X, Y)
+  res_augmented <- augment(res_cca, X, Y)
+
+  if (VERBOSE) {
+    print(res_augmented)
+    print(names(res_augmented))
+  }
 
   expect_type(res_augmented, "list")
-  expect_equal(dim(res_augmented$X)[2], dim(res$X)[2] + dim(res_cc$scores$xscores)[2])
-  expect_equal(dim(res_augmented$Y)[2], dim(res$Y)[2] + dim(res_cc$scores$yscores)[2])
-
+  expect_length(res_augmented, 34)
+  expect_s3_class(res_augmented, "tbl")
 })

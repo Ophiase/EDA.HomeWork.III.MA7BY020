@@ -35,7 +35,7 @@ test_that("augment.CA works correctly", {
   augmented <- augment(iris_ca, iris_df)
   if (VERBOSE) {
     cat("Augmented IRIS\n")
-    print(names(augmented))
+    print(augmented)
     sep()
   }
 
