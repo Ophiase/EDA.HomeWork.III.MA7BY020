@@ -1,3 +1,6 @@
+#' @name augment.CA
+#' @title Augment data with CA object
+#' 
 #' @description Augment data with information from a CA object
 #'
 #' @param x An object of class `CA` from the FactoMineR package.
@@ -5,20 +8,7 @@
 #' @param ... Additional arguments (not used).
 #'
 #' @return A `tibble` with columns containing the original data and additional columns with the row and column coordinates.
-#' @export augment CA
-#' @export augment
 augment.CA <- function(x, data, ...) {
-  # candidates to add :
-  #   x$row
-  #     x$row$coord
-  #     x$row$cos2
-  #     x$row$contrib
-  #     x$row$inertia (list)
-  #   x$call
-  #     x$call$marge.row (list)
-  #     x$call$row.w (list)
-  #     x$call$Xtot 150x4
-
   data <- as_tibble(data)
 
   # r$row
@@ -43,4 +33,21 @@ augment.CA <- function(x, data, ...) {
   }
 
   return(data)
+}
+
+#' @name tidy.CA
+#' @title Tidy a CA object
+#' @description statistics about a computed CA object
+#'
+#' @param x An object of class `CA` from the FactoMineR package.
+#' @param ... Additional arguments (not used).
+#'
+#' @return A `tibble` with statistics about computed parameters.
+tidy.CA <- function(x, ...) {
+  result <- x$eig %>%
+    as.data.frame() %>%
+    rownames_to_column(var = "term") %>%
+    as_tibble() %>%
+    setNames(c("term", "estimate", "var.percentage", "var.cumulative"))
+  result
 }

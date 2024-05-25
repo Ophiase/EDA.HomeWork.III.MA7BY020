@@ -53,3 +53,27 @@ test_that("augment.CA works correctly", {
   # expect_equal(nrow(augmented$col), ncol(iris_df))
   # expect_equal(ncol(augmented$col), nrow(iris_df) + ncol(iris_ca$col$coord))
 })
+
+
+test_that("tidy.CA works correctly", {
+  VERBOSE=TRUE
+
+  library(FactoMineR)
+  data(iris)
+  iris_df <- as.data.frame(
+    lapply(
+      iris[, 1:4], function(x) as.numeric(as.factor(x))
+    )
+  )
+
+  iris_ca <- CA(iris_df, ncp = 5, graph=FALSE)
+
+  iris_tidy <- tidy(iris_ca, iris_df)
+
+  if (VERBOSE) {
+    cat("Tidy result:\n")
+    print(names(iris_tidy))
+    sep()
+  }
+
+})

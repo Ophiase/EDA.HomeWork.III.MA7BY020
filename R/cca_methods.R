@@ -1,3 +1,6 @@
+#' @name augment.cc
+#' @title Augment data with CCA::cc object
+#' 
 #' @description Augment data with information from a CCA::cc object
 #'
 #' @param x An object of class `CCA::cc` from the FactoMineR package.
@@ -5,8 +8,6 @@
 #' @param ... Additional arguments (not used).
 #'
 #' @return A `tibble` with columns containing the original data and additional columns with the row and column coordinates.
-#' @export augment cc
-#' @export augment
 augment.cc <- function(x, data, ...) {
   # data <- as_tibble(data)
 

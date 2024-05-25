@@ -1,3 +1,6 @@
+#' @name augment.MCA
+#' @title Augment data with MCA object
+#' 
 #' @description Augment data with information from a MCA object
 #'
 #' @param x An object of class `MCA` from the FactoMineR package.
@@ -6,8 +9,6 @@
 #'
 #' @return A `tibble` with columns containing the original data and additional columns with the row and column coordinates.
 #' 
-#' @export augment MCA
-#' @export augment
 augment.MCA <- function(x, data, ...) {
   # candidates to add :
   # [1] "Name: call (List)"
