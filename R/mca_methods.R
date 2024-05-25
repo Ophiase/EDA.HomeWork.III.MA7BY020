@@ -10,17 +10,9 @@
 #' @return A `tibble` with columns containing the original data and additional columns with the row and column coordinates.
 #' 
 augment.MCA <- function(x, data, ...) {
-  # candidates to add :
-  # [1] "Name: call (List)"
-  # [1] "  - marge.row
-  # [1] "  - row.w
-  # [1] "  - Xtot
-  # [1] "Name: ind (List)"
-  # [1] "  - coord:
-  # [1] "  - contrib:
-  # [1] "  - cos2:
-  # [1] "Name: svd (List)"
-  # [1] "  - U
+  if (!inherits(x, "MCA")) {
+    stop("x is not a MCA")
+  }
 
   data <- as_tibble(data)
 
@@ -60,6 +52,10 @@ augment.MCA <- function(x, data, ...) {
 #'
 #' @return A `tibble` with statistics about computed parameters.
 tidy.MCA <- function(x, ...) {
+  if (!inherits(x, "MCA")) {
+    stop("x is not a MCA")
+  }
+
   result <- x$eig %>%
     as.data.frame() %>%
     rownames_to_column(var = "term") %>%
@@ -80,6 +76,10 @@ tidy.MCA <- function(x, ...) {
 #'
 #' @return A `tibble` with statistics about computed parameters.
 glance.MCA <- function(x, ...) {
+  if (!inherits(x, "MCA")) {
+    stop("x is not a MCA")
+  }
+
   result <- colMeans(x$eig) %>%
     t() %>%
     as_tibble() %>%

@@ -9,6 +9,10 @@
 #'
 #' @return A `tibble` with columns containing the original data and additional columns with the row and column coordinates.
 augment.CA <- function(x, data, ...) {
+  if (!inherits(x, "CA")) {
+    stop("x is not a CA")
+  }
+
   data <- as_tibble(data)
 
   # r$row
@@ -44,6 +48,10 @@ augment.CA <- function(x, data, ...) {
 #'
 #' @return A `tibble` with statistics about computed parameters.
 tidy.CA <- function(x, ...) {
+  if (!inherits(x, "CA")) {
+    stop("x is not a CA")
+  }
+
   result <- x$eig %>%
     as.data.frame() %>%
     rownames_to_column(var = "eigen") %>%
@@ -66,6 +74,10 @@ tidy.CA <- function(x, ...) {
 #'
 #' @return A `tibble` with statistics about computed parameters.
 glance.CA <- function(x, ...) {
+  if (!inherits(x, "CA")) {
+    stop("x is not a CA")
+  }
+
   result <- colMeans(x$eig) %>%
     t() %>%
     as_tibble() %>%
