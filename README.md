@@ -6,7 +6,7 @@ We implement for **CA**, **MCA**, **CCA** the following methods/objects :
 - augment
 - glance
 - tidy
-- ggplot
+- ggplot functions
 - autoplot
 
 Remark :
