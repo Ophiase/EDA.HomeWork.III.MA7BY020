@@ -46,13 +46,36 @@ augment.CA <- function(x, data, ...) {
 tidy.CA <- function(x, ...) {
   result <- x$eig %>%
     as.data.frame() %>%
-    rownames_to_column(var = "term") %>%
+    rownames_to_column(var = "eigen") %>%
     as_tibble() %>%
-    setNames(c("term", "estimate", "var.percentage", "var.cumulative"))
+    setNames(c("eigen", "estimate", "var.percentage", "var.cumulative"))
 
   result$coord.mean <- colMeans(x$row$coord)
   result$contrib.mean <- colMeans(x$row$contrib)
   result$cos2.mean <- colMeans(x$row$cos2)
 
   result
+}
+
+#' @name glance.CA
+#' @title Glance a CA object
+#' @description Global metrics about a computed CA object
+#'
+#' @param x An object of class `CA` from the FactoMineR package.
+#' @param ... Additional arguments (not used).
+#'
+#' @return A `tibble` with statistics about computed parameters.
+glance.CA <- function(x, ...) {
+  result <- colMeans(x$eig) %>%
+    t() %>%
+    as_tibble() %>%
+    setNames(c("eig.mean", "var.percent.mean", "var.cumul.mean"))
+
+  result$eig.1 <- x$eig[1, 1]
+  result$eig.2 <- x$eig[2, 1]
+  result$tot.inertia <- sum(x$eig[,1])
+  result$rows <- length(x$row$coord)
+  result$cols <- length(x$col$coord)
+
+  return(result)
 }

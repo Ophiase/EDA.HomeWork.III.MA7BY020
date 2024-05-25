@@ -70,3 +70,29 @@ test_that("tidy.CA works correctly", {
   expect_s3_class(res.tidy, "tbl")
 
 })
+
+test_that("glance.CA works correctly", {
+  VERBOSE=TRUE
+
+  library(FactoMineR)
+  data(iris)
+  iris_df <- as.data.frame(
+    lapply(
+      iris[, 1:4], function(x) as.numeric(as.factor(x))
+    )
+  )
+
+  res.ca <- CA(iris_df, ncp = 5, graph=FALSE)
+  res.glance <- glance(res.ca, iris_df)
+
+  if (VERBOSE) {
+    cat("Tidy result:\n")
+    print(res.glance)
+    sep()
+  }
+
+  expect_type(res.glance, "list")
+  expect_length(res.glance, 8)
+  expect_s3_class(res.glance, "tbl")
+
+})
