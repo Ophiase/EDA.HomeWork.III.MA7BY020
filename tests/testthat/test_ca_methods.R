@@ -56,23 +56,23 @@ test_that("tidy.CA works correctly", {
     )
   )
 
-  res.ca <- CA(iris_df, ncp = 5, graph=FALSE)
-  res.tidy <- tidy(res.ca, iris_df)
+  res_ca <- CA(iris_df, ncp = 5, graph=FALSE)
+  res_tidy <- tidy(res_ca, iris_df)
 
   if (VERBOSE) {
     cat("Tidy result:\n")
-    print(res.tidy)
+    print(res_tidy)
     sep()
   }
 
-  expect_type(res.tidy, "list")
-  expect_length(res.tidy, 7)
-  expect_s3_class(res.tidy, "tbl")
+  expect_type(res_tidy, "list")
+  expect_length(res_tidy, 7)
+  expect_s3_class(res_tidy, "tbl")
 
 })
 
 test_that("glance.CA works correctly", {
-  VERBOSE=TRUE
+  VERBOSE=FALSE
 
   library(FactoMineR)
   data(iris)
@@ -82,17 +82,17 @@ test_that("glance.CA works correctly", {
     )
   )
 
-  res.ca <- CA(iris_df, ncp = 5, graph=FALSE)
-  res.glance <- glance(res.ca, iris_df)
+  res_ca <- CA(iris_df, ncp = 5, graph=FALSE)
+  res_glance <- glance(res_ca, iris_df)
 
   if (VERBOSE) {
     cat("Tidy result:\n")
-    print(res.glance)
+    print(res_glance)
     sep()
   }
 
-  expect_type(res.glance, "list")
-  expect_length(res.glance, 8)
-  expect_s3_class(res.glance, "tbl")
+  expect_type(res_glance, "list")
+  expect_length(res_glance, 8)
+  expect_s3_class(res_glance, "tbl")
 
 })
