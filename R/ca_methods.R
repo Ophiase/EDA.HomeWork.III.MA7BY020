@@ -49,5 +49,10 @@ tidy.CA <- function(x, ...) {
     rownames_to_column(var = "term") %>%
     as_tibble() %>%
     setNames(c("term", "estimate", "var.percentage", "var.cumulative"))
+
+  result$coord.mean <- colMeans(x$row$coord)
+  result$contrib.mean <- colMeans(x$row$contrib)
+  result$cos2.mean <- colMeans(x$row$cos2)
+
   result
 }

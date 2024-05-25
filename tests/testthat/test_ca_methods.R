@@ -39,24 +39,14 @@ test_that("augment.CA works correctly", {
     sep()
   }
 
-  # # Check that the output is a list with two elements
   expect_type(augmented, "list")
   expect_length(augmented, 11)
-
-  # # # Check the row data
-  # expect_s3_class(augmented$row, "tbl")
-  # expect_equal(nrow(augmented$row), nrow(iris_df))
-  # expect_equal(ncol(augmented$row), ncol(iris_df) + ncol(iris_ca$row$coord))
-
-  # # # Check the column data
-  # expect_s3_class(augmented$col, "tbl")
-  # expect_equal(nrow(augmented$col), ncol(iris_df))
-  # expect_equal(ncol(augmented$col), nrow(iris_df) + ncol(iris_ca$col$coord))
+  expect_s3_class(augmented, "tbl")
 })
 
 
 test_that("tidy.CA works correctly", {
-  VERBOSE=TRUE
+  VERBOSE=FALSE
 
   library(FactoMineR)
   data(iris)
@@ -66,14 +56,17 @@ test_that("tidy.CA works correctly", {
     )
   )
 
-  iris_ca <- CA(iris_df, ncp = 5, graph=FALSE)
-
-  iris_tidy <- tidy(iris_ca, iris_df)
+  res.ca <- CA(iris_df, ncp = 5, graph=FALSE)
+  res.tidy <- tidy(res.ca, iris_df)
 
   if (VERBOSE) {
     cat("Tidy result:\n")
-    print(names(iris_tidy))
+    print(res.tidy)
     sep()
   }
+
+  expect_type(res.tidy, "list")
+  expect_length(res.tidy, 7)
+  expect_s3_class(res.tidy, "tbl")
 
 })
