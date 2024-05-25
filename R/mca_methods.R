@@ -88,8 +88,8 @@ glance.MCA <- function(x, ...) {
   result$eig.1 <- x$eig[1, 1]
   result$eig.2 <- x$eig[2, 1]
   result$tot.inertia <- sum(x$eig[,1])
-  result$rows <- length(x$row$coord)
-  result$cols <- length(x$col$coord)
+  # result$rows <- length(x$row$coord)
+  # result$cols <- length(x$col$coord)
 
   return(result)
 }

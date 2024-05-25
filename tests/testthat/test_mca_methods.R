@@ -50,7 +50,7 @@ test_that("glance.MCA works correctly", {
   }
 
   expect_type(res_glance, "list")
-  expect_length(res_glance, 8)
+  expect_length(res_glance, 6)
   expect_s3_class(res_glance, "tbl")
 
 })
