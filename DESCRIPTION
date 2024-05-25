@@ -2,9 +2,7 @@ Package: EDA.HomeWork.III.MA7BY020
 Title: EDA HomeWork III
 Version: 0.0.0.9000
 Authors@R: 
-    person("John", "Doe", , "john@doe.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: This package doe nothing.
+Description: This package implements augment, glance, tiddy, ggplot functions and autoplot for CA, MCA and CCA.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8
@@ -18,5 +16,7 @@ Imports:
   tibble (>= 3.0.0),
   generics (>= 0.0.2),
   tidyr (>= 1.0.0),
-  vegan
+  vegan,
+  dplyr,
+  ggplot2
 
