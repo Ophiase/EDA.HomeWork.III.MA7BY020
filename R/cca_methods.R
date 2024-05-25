@@ -65,3 +65,30 @@ tidy.cca <- function(x, ...) {
 
   return(result)
 }
+
+#' @name glance.cca
+#' @title Glance data with vegan::cca object
+#' @description Global metrics about a computed cca object
+#'
+#' @param x An object of class `cca` from the FactoMineR package.
+#' @param ... Additional arguments (not used).
+#'
+#' @return A `tibble` with statistics about computed parameters.
+glance.cca <- function(x, ...) {
+  if (!inherits(x, "cca")) {
+    stop("x is not a cca")
+  }
+
+  result <- tidy(x)[, -1] %>%
+    colMeans() %>% t() %>%
+    as_tibble()
+
+  # result <- cbind(result, tot.chi=x$tot.chi)
+  result <- cbind(result, CCA.tot.chi=x$tot.chi)
+  result <- cbind(result, grand.total=x$tot.chi)
+
+  result <- cbind(result, rank=x$CCA$rank)
+  result <- cbind(result, qrank=x$CCA$qrank)
+
+  return(as_tibble(result))
+}
