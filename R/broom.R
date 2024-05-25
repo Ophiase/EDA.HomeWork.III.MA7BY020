@@ -2,4 +2,5 @@
 #' @importFrom tibble as_tibble
 #' @export
 generics::augment
-generics::tidy()
+generics::tidy
+generics::glance
