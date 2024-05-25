@@ -52,5 +52,16 @@ tidy.cca <- function(x, ...) {
     stop("x is not a cca")
   }
 
-  return(x) # not implemented
+  result <- x$CCA$eig %>%
+    as.data.frame() %>%
+    rownames_to_column(var = "dimension") %>%
+    as_tibble() %>%
+    setNames(c("dimension", "eigen_value"))
+
+  result$CCA.u <- colMeans(x$CCA$u)
+  result$CCA.v <- colMeans(x$CCA$v)
+  result$CCA.bitplot <- colMeans(x$CCA$biplot)
+  result$CCA.envcentre <- mean(x$CCA$envcentre)
+
+  return(result)
 }
