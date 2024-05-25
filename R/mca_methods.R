@@ -70,3 +70,26 @@ tidy.MCA <- function(x, ...) {
 
   result
 }
+
+#' @name glance.MCA
+#' @title Glance a MCA object
+#' @description Global metrics about a computed MCA object
+#'
+#' @param x An object of class `MCA` from the FactoMineR package.
+#' @param ... Additional arguments (not used).
+#'
+#' @return A `tibble` with statistics about computed parameters.
+glance.MCA <- function(x, ...) {
+  result <- colMeans(x$eig) %>%
+    t() %>%
+    as_tibble() %>%
+    setNames(c("eig.mean", "var.percent.mean", "var.cumul.mean"))
+
+  result$eig.1 <- x$eig[1, 1]
+  result$eig.2 <- x$eig[2, 1]
+  result$tot.inertia <- sum(x$eig[,1])
+  # result$rows <- length(x$row$coord)
+  # result$cols <- length(x$col$coord)
+
+  return(result)
+}
