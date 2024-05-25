@@ -56,19 +56,17 @@ test_that("tidy.CA works correctly", {
     )
   )
 
-  iris_ca <- CA(iris_df, ncp = 5, graph=FALSE)
-
-  iris_tidy <- tidy(iris_ca, iris_df)
+  res.ca <- CA(iris_df, ncp = 5, graph=FALSE)
+  res.tidy <- tidy(res.ca, iris_df)
 
   if (VERBOSE) {
     cat("Tidy result:\n")
-    # print(names(iris_tidy))
-    print(iris_tidy)
+    print(res.tidy)
     sep()
   }
 
-  expect_type(iris_tidy, "list")
-  expect_length(iris_tidy, 7)
-  expect_s3_class(iris_tidy, "tbl")
+  expect_type(res.tidy, "list")
+  expect_length(res.tidy, 7)
+  expect_s3_class(res.tidy, "tbl")
 
 })

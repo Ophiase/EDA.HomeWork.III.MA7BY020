@@ -50,3 +50,23 @@ augment.MCA <- function(x, data, ...) {
 
   return(data)
 }
+
+#' @name tidy.MCA
+#' @title Tidy a MCA object
+#' @description statistics about a computed MCA object
+#'
+#' @param x An object of class `MCA` from the FactoMineR package.
+#' @param ... Additional arguments (not used).
+#'
+#' @return A `tibble` with statistics about computed parameters.
+tidy.MCA <- function(x, ...) {
+  result <- x$eig %>%
+    as.data.frame() %>%
+    rownames_to_column(var = "term") %>%
+    as_tibble() %>%
+    setNames(c("term", "estimate", "var.percentage", "var.cumulative"))
+
+  result$coord.mean <- rowMeans(x$var$eta2)
+
+  result
+}
