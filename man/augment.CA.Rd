@@ -4,12 +4,14 @@
 \alias{augment.CA}
 \title{Augment data with CA object}
 \usage{
-\method{augment}{CA}(x, data, ...)
+\method{augment}{CA}(x, data, for_columns = FALSE, ...)
 }
 \arguments{
 \item{x}{An oebject of class \code{CA} from the FactoMineR package.}
 
 \item{data}{The original data used to create the \code{CA} object.}
+
+\item{for_columns}{augment columns instead}
 
 \item{...}{Additional arguments (not used).}
 }

@@ -4,7 +4,7 @@
 \alias{augment.cca}
 \title{Augment data with vegan::cca object}
 \usage{
-\method{augment}{cca}(x, data_X, data_Y, ...)
+\method{augment}{cca}(x, data_X, data_Y, for_columns = FALSE, ...)
 }
 \arguments{
 \item{x}{An object of class \code{vegan::cca} from the FactoMineR package.}
@@ -12,6 +12,8 @@
 \item{data_X}{The original data used to create the \code{vegan::cca} object.}
 
 \item{data_Y}{The original data used to create the \code{vegan::cca} object.}
+
+\item{for_columns}{augment columns instead}
 
 \item{...}{Additional arguments (not used).}
 }

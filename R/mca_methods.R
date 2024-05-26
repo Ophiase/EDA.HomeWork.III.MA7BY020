@@ -5,11 +5,12 @@
 #'
 #' @param x An object of class `MCA` from the FactoMineR package.
 #' @param data The original data used to create the `MCA` object.
+#' @param for_columns augment columns instead
 #' @param ... Additional arguments (not used).
 #'
 #' @return A `tibble` with columns containing the original data and additional columns with the row and column coordinates.
 #' 
-augment.MCA <- function(x, data, ...) {
+augment.MCA <- function(x, data, for_columns=FALSE, ...) {
   if (!inherits(x, "MCA")) {
     stop("x is not a MCA")
   }

@@ -4,12 +4,14 @@
 \alias{augment.MCA}
 \title{Augment data with MCA object}
 \usage{
-\method{augment}{MCA}(x, data, ...)
+\method{augment}{MCA}(x, data, for_columns = FALSE, ...)
 }
 \arguments{
 \item{x}{An object of class \code{MCA} from the FactoMineR package.}
 
 \item{data}{The original data used to create the \code{MCA} object.}
+
+\item{for_columns}{augment columns instead}
 
 \item{...}{Additional arguments (not used).}
 }

@@ -6,10 +6,11 @@
 #' @param x An object of class `vegan::cca` from the FactoMineR package.
 #' @param data_X The original data used to create the `vegan::cca` object.
 #' @param data_Y The original data used to create the `vegan::cca` object.
+#' @param for_columns augment columns instead
 #' @param ... Additional arguments (not used).
 #'
 #' @return A `tibble` with columns containing the original data and additional columns with the row and column coordinates.
-augment.cca <- function(x, data_X, data_Y, ...) {
+augment.cca <- function(x, data_X, data_Y, for_columns=FALSE, ...) {
   if (!inherits(x, "cca")) {
     stop("x is not a cca")
   }

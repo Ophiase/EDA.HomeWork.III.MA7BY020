@@ -5,10 +5,11 @@
 #'
 #' @param x An oebject of class `CA` from the FactoMineR package.
 #' @param data The original data used to create the `CA` object.
+#' @param for_columns augment columns instead
 #' @param ... Additional arguments (not used).
 #'
 #' @return A `tibble` with columns containing the original data and additional columns with the row and column coordinates.
-augment.CA <- function(x, data, ...) {
+augment.CA <- function(x, data, for_columns=FALSE, ...) {
   if (!inherits(x, "CA")) {
     stop("x is not a CA")
   }
