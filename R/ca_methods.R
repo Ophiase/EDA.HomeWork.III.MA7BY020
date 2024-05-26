@@ -15,8 +15,15 @@ augment.CA <- function(x, data, for_columns=FALSE, ...) {
   }
 
   if (for_columns) {
-    result <- as_tibble(t(data))
-    result$.coord <- unlist(x$col)
+    result <- data %>% t() %>% as.data.frame() %>%
+      rownames_to_column(var="column") %>%
+      as_tibble()
+    
+      result$.coord <- x$col$coord
+      result$.contrib <- x$col$contrib
+      result$.cos2 <- x$col$cos2
+      result$.inertia <- x$col$inertia
+
     class(result) <- c("CA_processed", "tbl df", "tbl", "data.frame")
     return(result)
   }

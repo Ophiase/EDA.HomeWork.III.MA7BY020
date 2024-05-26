@@ -28,18 +28,11 @@ test_that("augment.CA works for columns correctly", {
   data(mortality)
   dataset <- mortality[, 1:9]
   res_ca <- CA(dataset, ncp = 2, graph=FALSE)
-  # augmented <- augment(res_ca, dataset, for_columns=TRUE)
+  augmented <- augment(res_ca, dataset, for_columns=TRUE)
 
-  # if (VERBOSE) {
-  #   cat("Augmented\n")
-  #   print(names(augmented))
-  #   print(augmented)
-  #   sep()
-  # }
-
-  # expect_type(augmented, "list")
-  # expect_length(augmented, 16)
-  # expect_s3_class(augmented, "tbl")
+  expect_type(augmented, "list")
+  expect_length(augmented, dim(dataset)[1] + 1 + 4)
+  expect_s3_class(augmented, "tbl")
 })
 
 
