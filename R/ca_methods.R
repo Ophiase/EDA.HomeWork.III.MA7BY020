@@ -3,7 +3,7 @@
 #' 
 #' @description Augment data with information from a CA object
 #'
-#' @param x An object of class `CA` from the FactoMineR package.
+#' @param x An oebject of class `CA` from the FactoMineR package.
 #' @param data The original data used to create the `CA` object.
 #' @param ... Additional arguments (not used).
 #'
@@ -58,10 +58,11 @@ tidy.CA <- function(x, ...) {
     as_tibble() %>%
     setNames(c("eigen", "estimate", "var.percentage", "var.cumulative"))
 
-  result$coord.mean <- colMeans(x$row$coord)
-  result$contrib.mean <- colMeans(x$row$contrib)
-  result$cos2.mean <- colMeans(x$row$cos2)
-
+  target_length = dim(result)[1]
+  result$coord.mean <- pad_na(colMeans(x$row$coord), target_length)
+  result$contrib.mean <- pad_na(colMeans(x$row$contrib), target_length)
+  result$cos2.mean <- pad_na(colMeans(x$row$cos2), target_length)
+  
   result
 }
 

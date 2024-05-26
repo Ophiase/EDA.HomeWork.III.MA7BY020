@@ -62,7 +62,9 @@ tidy.MCA <- function(x, ...) {
     as_tibble() %>%
     setNames(c("term", "estimate", "var.percentage", "var.cumulative"))
 
-  result$coord.mean <- rowMeans(x$var$eta2)
+  target_length = dim(result)[1]
+
+  result$coord.mean <- pad_na(rowMeans(x$var$eta2), target_length)
 
   result
 }

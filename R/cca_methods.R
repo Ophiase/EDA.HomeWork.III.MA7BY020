@@ -58,10 +58,12 @@ tidy.cca <- function(x, ...) {
     as_tibble() %>%
     setNames(c("dimension", "eigen_value"))
 
-  result$CCA.u <- colMeans(x$CCA$u)
-  result$CCA.v <- colMeans(x$CCA$v)
-  result$CCA.bitplot <- colMeans(x$CCA$biplot)
-  result$CCA.envcentre <- mean(x$CCA$envcentre)
+  target_length = dim(result)[1]
+
+  result$CCA.u <- pad_na(colMeans(x$CCA$u), target_length)
+  result$CCA.v <- pad_na(colMeans(x$CCA$v), target_length)
+  result$CCA.bitplot <- pad_na(colMeans(x$CCA$biplot), target_length)
+  result$CCA.envcentre <- pad_na(mean(x$CCA$envcentre), target_length)
 
   return(result)
 }

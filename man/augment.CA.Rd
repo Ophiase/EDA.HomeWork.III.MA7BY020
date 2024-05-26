@@ -7,7 +7,7 @@
 \method{augment}{CA}(x, data, ...)
 }
 \arguments{
-\item{x}{An object of class \code{CA} from the FactoMineR package.}
+\item{x}{An oebject of class \code{CA} from the FactoMineR package.}
 
 \item{data}{The original data used to create the \code{CA} object.}
 
