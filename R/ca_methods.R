@@ -134,6 +134,9 @@ screeplot.CA_processed <- function(tidy_output, ...) {
 #' @param ... Additional arguments (not used).
 #'
 #' @return A ggplot
+#' 
+#' @export 
+#' @method rowplot CA_processed
 rowplot.CA_processed <- function(augment_output, ...) {
   ggplot(augment_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], label = rownames(augment_output))) +
     geom_point() +
@@ -148,9 +151,34 @@ rowplot.CA_processed <- function(augment_output, ...) {
 #' @param ... Additional arguments (not used).
 #'
 #' @return A ggplot
+#' 
+#' @export 
+#' @method colplot CA_processed
 colplot.CA_processed <- function(augment_output, ...) {
   ggplot(augment_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], label = rownames(augment_output))) +
     geom_point() +
     geom_text(vjust = -0.5) +
     labs(title = "Row Plot for CA", x = "Dimension 1", y = "Dimension 2")
+}
+
+#' @name symmetricplot.CA_processed
+#' @title Symmetric plot for CA_processed
+#'
+#' @param row_output Result of the augment function over CA for rows
+#' @param col_output Result of the augment function over CA for columns
+#' @param ... Additional arguments (not used).
+#'
+#' @return A ggplot
+#' 
+#' @export 
+#' @method symmetricplot CA_processed
+symmetricplot.CA_processed <- function(row_output, col_output, ...) {
+  ggplot() +
+    geom_point(data = row_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], color = "Rows")) +
+    geom_point(data = col_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], color = "Columns")) +
+    geom_text(data = row_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], label = rownames(row_output)), vjust = -0.5, color = "blue") +
+    geom_text(data = col_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], label = rownames(col_output)), vjust = -0.5, color = "red") +
+    labs(title = "Symmetric Plot for CA", x = "Dimension 1", y = "Dimension 2") +
+    scale_color_manual(values = c("Rows" = "blue", "Columns" = "red")) +
+    theme_minimal()
 }
