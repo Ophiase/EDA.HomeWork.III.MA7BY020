@@ -2,5 +2,7 @@
 
 export(augment)
 importFrom(generics,augment)
+importFrom(generics,glance)
+importFrom(generics,tidy)
 importFrom(tibble,as_tibble)
 importFrom(tibble,rownames_to_column)

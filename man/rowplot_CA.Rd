@@ -9,7 +9,7 @@ rowplot_CA(augment_output, ...)
 \arguments{
 \item{...}{Additional arguments (not used).}
 
-\item{x}{Result of augment function over CA}
+\item{x}{Result of the augment function over CA}
 }
 \value{
 A ggplot
