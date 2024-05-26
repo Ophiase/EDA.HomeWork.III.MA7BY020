@@ -57,7 +57,7 @@ test_that("tidy.CA works correctly", {
   )
 
   res_ca <- CA(iris_df, ncp = 5, graph=FALSE)
-  res_tidy <- tidy(res_ca, iris_df)
+  res_tidy <- tidy(res_ca)
 
   if (VERBOSE) {
     cat("Tidy result:\n")

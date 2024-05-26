@@ -1,9 +1,9 @@
 #' @name augment.CA
 #' @title Augment data with CA object
-#' 
+#'
 #' @description Augment data with information from a CA object
 #'
-#' @param x An object of class `CA` from the FactoMineR package.
+#' @param x An oebject of class `CA` from the FactoMineR package.
 #' @param data The original data used to create the `CA` object.
 #' @param ... Additional arguments (not used).
 #'
@@ -58,9 +58,10 @@ tidy.CA <- function(x, ...) {
     as_tibble() %>%
     setNames(c("eigen", "estimate", "var.percentage", "var.cumulative"))
 
-  result$coord.mean <- colMeans(x$row$coord)
-  result$contrib.mean <- colMeans(x$row$contrib)
-  result$cos2.mean <- colMeans(x$row$cos2)
+  target_length <- dim(result)[1]
+  result$coord.mean <- pad_na(colMeans(x$row$coord), target_length)
+  result$contrib.mean <- pad_na(colMeans(x$row$contrib), target_length)
+  result$cos2.mean <- pad_na(colMeans(x$row$cos2), target_length)
 
   result
 }
@@ -85,9 +86,39 @@ glance.CA <- function(x, ...) {
 
   result$eig.1 <- x$eig[1, 1]
   result$eig.2 <- x$eig[2, 1]
-  result$tot.inertia <- sum(x$eig[,1])
+  result$tot.inertia <- sum(x$eig[, 1])
   result$rows <- length(x$row$coord)
   result$cols <- length(x$col$coord)
 
   return(result)
+}
+
+# -----------------------------------------------------------------------------------
+# GRAPHICS
+
+#' @name screeplot_CA
+#' @title screeplot for CA
+#'
+#' @param x Result of tidy function over CA
+#' @param ... Additional arguments (not used).
+#'
+#' @return A ggplot
+screeplot_CA <- function(tidy_output, ...) {
+  ggplot(tidy_output, aes(x = eigen, y = var.percentage)) +
+    geom_bar(stat = "identity") +
+    labs(title = "Scree Plot for CA", x = "Component", y = "Variance Explained (%)")
+}
+
+#' @name rowplot_CA
+#' @title rowplot for CA
+#'
+#' @param x Result of augment function over CA
+#' @param ... Additional arguments (not used).
+#'
+#' @return A ggplot
+rowplot_CA <- function(augment_output, ...) {
+  ggplot(augment_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], label = rownames(augment_output))) +
+    geom_point() +
+    geom_text(vjust = -0.5) +
+    labs(title = "Row Plot for CA", x = "Dimension 1", y = "Dimension 2")
 }
