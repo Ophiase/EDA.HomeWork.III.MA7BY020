@@ -5,12 +5,27 @@
 #'
 #' @param x An oebject of class `CA` from the FactoMineR package.
 #' @param data The original data used to create the `CA` object.
+#' @param for_columns augment columns instead
 #' @param ... Additional arguments (not used).
 #'
 #' @return A `tibble` with columns containing the original data and additional columns with the row and column coordinates.
-augment.CA <- function(x, data, ...) {
+augment.CA <- function(x, data, for_columns=FALSE, ...) {
   if (!inherits(x, "CA")) {
     stop("x is not a CA")
+  }
+
+  if (for_columns) {
+    result <- data %>% t() %>% as.data.frame() %>%
+      rownames_to_column(var="column") %>%
+      as_tibble()
+    
+      result$.coord <- x$col$coord
+      result$.contrib <- x$col$contrib
+      result$.cos2 <- x$col$cos2
+      result$.inertia <- x$col$inertia
+
+    class(result) <- c("CA_processed", "tbl df", "tbl", "data.frame")
+    return(result)
   }
 
   result <- as_tibble(data)
@@ -36,7 +51,7 @@ augment.CA <- function(x, data, ...) {
     }
   }
 
-  class(result) <- c("CA", "tbl_df", "tbl", "data.frame")
+  class(result) <- c("CA_processed", "tbl df", "tbl", "data.frame")
   return(result)
 }
 
@@ -64,7 +79,7 @@ tidy.CA <- function(x, ...) {
   result$contrib.mean <- pad_na(colMeans(x$row$contrib), target_length)
   result$cos2.mean <- pad_na(colMeans(x$row$cos2), target_length)
 
-  class(result) <- c("CA", "tbl_df", "tbl", "data.frame")
+  class(result) <- c("CA_processed", "tbl f", "tbl", "data.frame")
   result
 }
 
@@ -92,36 +107,78 @@ glance.CA <- function(x, ...) {
   result$rows <- length(x$row$coord)
   result$cols <- length(x$col$coord)
 
-  class(result) <- c("CA", "tbl_df", "tbl", "data.frame")
+  class(result) <- c("CA_processed", "tbl df", "tbl", "data.frame")
   return(result)
 }
 
 # -----------------------------------------------------------------------------------
 # GRAPHICS
 
-#' @name screeplot.CA
-#' @title screeplot for CA
+#' @name screeplot.CA_processed
+#' @title screeplot for CA_processed
 #'
 #' @param tidy_output Result of tidy function over CA
 #' @param ... Additional arguments (not used).
 #'
 #' @return A ggplot
-screeplot.CA <- function(tidy_output, ...) {
+screeplot.CA_processed <- function(tidy_output, ...) {
   ggplot(tidy_output, aes(x = eigen, y = var.percentage)) +
     geom_bar(stat = "identity") +
     labs(title = "Scree Plot for CA", x = "Component", y = "Variance Explained (%)")
 }
 
-#' @name rowplot.CA
-#' @title rowplot for CA
+#' @name rowplot.CA_processed
+#' @title rowplot for CA_processed
 #'
 #' @param augment_output Result of the augment function over CA
 #' @param ... Additional arguments (not used).
 #'
 #' @return A ggplot
-rowplot.CA <- function(augment_output, ...) {
+#' 
+#' @export 
+#' @method rowplot CA_processed
+rowplot.CA_processed <- function(augment_output, ...) {
   ggplot(augment_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], label = rownames(augment_output))) +
     geom_point() +
     geom_text(vjust = -0.5) +
     labs(title = "Row Plot for CA", x = "Dimension 1", y = "Dimension 2")
+}
+
+#' @name colplot.CA_processed
+#' @title colplot for CA_processed
+#'
+#' @param augment_output Result of the augment function over CA
+#' @param ... Additional arguments (not used).
+#'
+#' @return A ggplot
+#' 
+#' @export 
+#' @method colplot CA_processed
+colplot.CA_processed <- function(augment_output, ...) {
+  ggplot(augment_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], label = rownames(augment_output))) +
+    geom_point() +
+    geom_text(vjust = -0.5) +
+    labs(title = "Row Plot for CA", x = "Dimension 1", y = "Dimension 2")
+}
+
+#' @name symmetricplot.CA_processed
+#' @title Symmetric plot for CA_processed
+#'
+#' @param row_output Result of the augment function over CA for rows
+#' @param col_output Result of the augment function over CA for columns
+#' @param ... Additional arguments (not used).
+#'
+#' @return A ggplot
+#' 
+#' @export 
+#' @method symmetricplot CA_processed
+symmetricplot.CA_processed <- function(row_output, col_output, ...) {
+  ggplot() +
+    geom_point(data = row_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], color = "Rows")) +
+    geom_point(data = col_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], color = "Columns")) +
+    geom_text(data = row_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], label = rownames(row_output)), vjust = -0.5, color = "blue") +
+    geom_text(data = col_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], label = rownames(col_output)), vjust = -0.5, color = "red") +
+    labs(title = "Symmetric Plot for CA", x = "Dimension 1", y = "Dimension 2") +
+    scale_color_manual(values = c("Rows" = "blue", "Columns" = "red")) +
+    theme_minimal()
 }

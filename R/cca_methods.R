@@ -6,24 +6,36 @@
 #' @param x An object of class `vegan::cca` from the FactoMineR package.
 #' @param data_X The original data used to create the `vegan::cca` object.
 #' @param data_Y The original data used to create the `vegan::cca` object.
+#' @param for_columns augment columns instead
 #' @param ... Additional arguments (not used).
 #'
 #' @return A `tibble` with columns containing the original data and additional columns with the row and column coordinates.
-augment.cca <- function(x, data_X, data_Y, ...) {
+augment.cca <- function(x, data_X, data_Y, for_columns=FALSE, ...) {
   if (!inherits(x, "cca")) {
     stop("x is not a cca")
   }
 
-  if (is.null(data_X) && is.null(data_Y)) {
-    stop("data_X ou data_Y cannot both be null")
+  if (is.null(data_X)) {
+    stop("data_X cannot be null")
   }
 
-  if (!is.null(data_X) && !is.null(data_Y)) {
+  if (for_columns) {
+    result <- data_X %>% 
+      t() %>%
+      as.data.frame() %>%
+      as_tibble()
+    
+    result$.colsum <- x$.colsum
+    result$.v <- x$CCA$v
+
+    class(result) <- c("cca_processed", "tbl df", "tbl", "data.frame")
+    return(result)
+  }
+
+  if (!is.null(data_Y)) {
     data <- as_tibble(cbind(data_X, data_Y))
-  } else if (!is.null(data_X)) {
-    data <- as_tibble(data_X)
   } else {
-    data <- as_tibble(data_Y)
+    data <- as_tibble(data_X)
   }
 
   if (!is.null(x$rowsum))
@@ -36,7 +48,7 @@ augment.cca <- function(x, data_X, data_Y, ...) {
     data <- cbind(data, .wa=x$CCA$wa)
 
   result <- as_tibble(data)
-  class(result) <- c("cca", "tbl_df", "tbl", "data.frame")
+  class(result) <- c("cca_processed", "tbl df", "tbl", "data.frame")
   result
 }
 
@@ -67,7 +79,7 @@ tidy.cca <- function(x, ...) {
   result$CCA.bitplot <- pad_na(colMeans(x$CCA$biplot), target_length)
   result$CCA.envcentre <- pad_na(mean(x$CCA$envcentre), target_length)
 
-  class(result) <- c("cca", "tbl_df", "tbl", "data.frame")
+  class(result) <- c("cca_processed", "tbl df", "tbl", "data.frame")
   result
 }
 
@@ -96,6 +108,6 @@ glance.cca <- function(x, ...) {
   result <- cbind(result, qrank=x$CCA$qrank)
 
   result <- as_tibble(result)
-  class(result) <- c("cca", "tbl_df", "tbl", "data.frame")
+  class(result) <- c("cca_processed", "tbl df", "tbl", "data.frame")
   result
 }

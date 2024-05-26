@@ -5,11 +5,27 @@ test_that("augment.MCA works correctly", {
   library(broom)
   data(poison)
   res_mca <- MCA(poison, quanti.sup = 1:2, quali.sup = 3:4, graph = FALSE)
+  res_augmented <- augment(res_mca, poison)
 
-  augmented <- augment(res_mca, poison)
+  # print(res_augmented)
 
-  expect_type(augmented, "list")
-  expect_length(augmented, 21)
+  expect_type(res_augmented, "list")
+  expect_length(res_augmented, 21)
+  expect_s3_class(res_augmented, "tbl")
+})
+
+test_that("augment.MCA works for columns correctly", {
+  library(FactoMineR)
+  library(broom)
+  data(poison)
+  res_mca <- MCA(poison, quanti.sup = 1:2, quali.sup = 3:4, graph = FALSE)
+  res_augmented <- augment(res_mca, poison, for_columns=TRUE)
+
+  # print(res_augmented)
+
+  expect_type(res_augmented, "list")
+  expect_length(res_augmented, 7)
+  expect_s3_class(res_augmented, "tbl")
 })
 
 

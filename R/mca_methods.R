@@ -5,14 +5,29 @@
 #'
 #' @param x An object of class `MCA` from the FactoMineR package.
 #' @param data The original data used to create the `MCA` object.
+#' @param for_columns augment columns instead
 #' @param ... Additional arguments (not used).
 #'
 #' @return A `tibble` with columns containing the original data and additional columns with the row and column coordinates.
 #' 
-augment.MCA <- function(x, data, ...) {
+augment.MCA <- function(x, data, for_columns=FALSE, ...) {
   if (!inherits(x, "MCA")) {
     stop("x is not a MCA")
   }
+
+  if (for_columns) {
+    result <- x$call$marge.col %>% 
+      t() %>% t() %>% as.data.frame() %>% 
+      rownames_to_column(var = "column") %>% 
+      as_tibble() %>% 
+      setNames(c("column", "marge")) %>%
+      cbind(dim=x$svd$V) %>%
+      as_tibble()
+    
+    class(result) <- c("MCA_processed", "tbl df", "tbl", "data.frame")
+    return(result)
+  }
+
 
   data <- as_tibble(data)
 
@@ -41,7 +56,7 @@ augment.MCA <- function(x, data, ...) {
   }
 
   result <- as_tibble(data)
-  class(result) <- c("cca", "tbl_df", "tbl", "data.frame")
+  class(result) <- c("MCA_processed", "tbl df", "tbl", "data.frame")
   result
 }
 
@@ -68,7 +83,7 @@ tidy.MCA <- function(x, ...) {
 
   result$coord.mean <- pad_na(rowMeans(x$var$eta2), target_length)
 
-  class(result) <- c("cca", "tbl_df", "tbl", "data.frame")
+  class(result) <- c("MCA_processed", "tbl df", "tbl", "data.frame")
   result
 }
 
@@ -96,6 +111,6 @@ glance.MCA <- function(x, ...) {
   # result$rows <- length(x$row$coord)
   # result$cols <- length(x$col$coord)
 
-  class(result) <- c("cca", "tbl_df", "tbl", "data.frame")
+  class(result) <- c("MCA_processed", "tbl df", "tbl", "data.frame")
   result
 }
