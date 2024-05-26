@@ -36,7 +36,7 @@ augment.CA <- function(x, data, ...) {
     }
   }
 
-  class(result) <- c("CA", "tbl_df", "tbl", "data.frame")
+  class(result) <- c("CA", "tbl df", "tbl", "data.frame")
   return(result)
 }
 
@@ -64,7 +64,7 @@ tidy.CA <- function(x, ...) {
   result$contrib.mean <- pad_na(colMeans(x$row$contrib), target_length)
   result$cos2.mean <- pad_na(colMeans(x$row$cos2), target_length)
 
-  class(result) <- c("CA", "tbl_df", "tbl", "data.frame")
+  class(result) <- c("CA", "tbl f", "tbl", "data.frame")
   result
 }
 
@@ -92,7 +92,7 @@ glance.CA <- function(x, ...) {
   result$rows <- length(x$row$coord)
   result$cols <- length(x$col$coord)
 
-  class(result) <- c("CA", "tbl_df", "tbl", "data.frame")
+  class(result) <- c("CA", "tbl df", "tbl", "data.frame")
   return(result)
 }
 

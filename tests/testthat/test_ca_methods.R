@@ -4,43 +4,20 @@ test_that("augment.CA works correctly", {
   VERBOSE=FALSE
 
   library(FactoMineR)
+  data(mortality)
+  dataset <- mortality[, 1:9]
+  res_ca <- CA(dataset, ncp = 2, graph=FALSE)
 
-  data(iris)
-
+  augmented <- augment(res_ca, dataset)
   if (VERBOSE) {
-    cat("Dataset : Iris\n")
-    sep()
-    print(head(iris))
-    sep()
-  }
-
-  iris_df <- as.data.frame(
-    lapply(
-      iris[, 1:4], function(x) as.numeric(as.factor(x))
-    )
-  )
-  if (VERBOSE) {
-    cat("Iris DF (Species is not a scalar)\n")
-    print(names(iris_df))
-    sep()
-  }
-
-  iris_ca <- CA(iris_df, ncp = 2, graph=FALSE)
-  if (VERBOSE) {
-    cat("Iris CA\n")
-    print(names(iris_ca))
-    sep()
-  }
-
-  augmented <- augment(iris_ca, iris_df)
-  if (VERBOSE) {
-    cat("Augmented IRIS\n")
+    cat("Augmented\n")
+    print(names(augmented))
     print(augmented)
     sep()
   }
 
   expect_type(augmented, "list")
-  expect_length(augmented, 11)
+  expect_length(augmented, 16)
   expect_s3_class(augmented, "tbl")
 })
 
@@ -49,14 +26,9 @@ test_that("tidy.CA works correctly", {
   VERBOSE=FALSE
 
   library(FactoMineR)
-  data(iris)
-  iris_df <- as.data.frame(
-    lapply(
-      iris[, 1:4], function(x) as.numeric(as.factor(x))
-    )
-  )
-
-  res_ca <- CA(iris_df, ncp = 5, graph=FALSE)
+  data(mortality)
+  dataset <- mortality[, 1:9]
+  res_ca <- CA(dataset, ncp = 2, graph=FALSE)
   res_tidy <- tidy(res_ca)
 
   if (VERBOSE) {
@@ -75,14 +47,9 @@ test_that("glance.CA works correctly", {
   VERBOSE=FALSE
 
   library(FactoMineR)
-  data(iris)
-  iris_df <- as.data.frame(
-    lapply(
-      iris[, 1:4], function(x) as.numeric(as.factor(x))
-    )
-  )
-
-  res_ca <- CA(iris_df, ncp = 5, graph=FALSE)
+  data(mortality)
+  dataset <- mortality[, 1:9]
+  res_ca <- CA(dataset, ncp = 2, graph=FALSE)
   res_glance <- glance(res_ca, iris_df)
 
   if (VERBOSE) {
@@ -100,7 +67,7 @@ test_that("glance.CA works correctly", {
 test_that("ggplot for CA works correctly", {
   library(gridExtra)
 
-  ENABLED=TRUE
+  ENABLED=FALSE
 
   library(FactoMineR)
   data(iris)

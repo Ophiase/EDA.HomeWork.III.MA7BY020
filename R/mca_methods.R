@@ -41,7 +41,7 @@ augment.MCA <- function(x, data, ...) {
   }
 
   result <- as_tibble(data)
-  class(result) <- c("cca", "tbl_df", "tbl", "data.frame")
+  class(result) <- c("cca", "tbl df", "tbl", "data.frame")
   result
 }
 
@@ -68,7 +68,7 @@ tidy.MCA <- function(x, ...) {
 
   result$coord.mean <- pad_na(rowMeans(x$var$eta2), target_length)
 
-  class(result) <- c("cca", "tbl_df", "tbl", "data.frame")
+  class(result) <- c("cca", "tbl df", "tbl", "data.frame")
   result
 }
 
@@ -96,6 +96,6 @@ glance.MCA <- function(x, ...) {
   # result$rows <- length(x$row$coord)
   # result$cols <- length(x$col$coord)
 
-  class(result) <- c("cca", "tbl_df", "tbl", "data.frame")
+  class(result) <- c("cca", "tbl df", "tbl", "data.frame")
   result
 }
