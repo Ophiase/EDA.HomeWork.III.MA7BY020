@@ -15,6 +15,20 @@ augment.MCA <- function(x, data, for_columns=FALSE, ...) {
     stop("x is not a MCA")
   }
 
+  if (for_columns) {
+    result <- x$call$marge.col %>% 
+      t() %>% t() %>% as.data.frame() %>% 
+      rownames_to_column(var = "column") %>% 
+      as_tibble() %>% 
+      setNames(c("column", "marge")) %>%
+      cbind(dim=x$svd$V) %>%
+      as_tibble()
+    
+    class(result) <- c("MCA_processed", "tbl df", "tbl", "data.frame")
+    return(result)
+  }
+
+
   data <- as_tibble(data)
 
   # x$call
@@ -42,7 +56,7 @@ augment.MCA <- function(x, data, for_columns=FALSE, ...) {
   }
 
   result <- as_tibble(data)
-  class(result) <- c("cca", "tbl df", "tbl", "data.frame")
+  class(result) <- c("MCA_processed", "tbl df", "tbl", "data.frame")
   result
 }
 
@@ -69,7 +83,7 @@ tidy.MCA <- function(x, ...) {
 
   result$coord.mean <- pad_na(rowMeans(x$var$eta2), target_length)
 
-  class(result) <- c("cca", "tbl df", "tbl", "data.frame")
+  class(result) <- c("MCA_processed", "tbl df", "tbl", "data.frame")
   result
 }
 
@@ -97,6 +111,6 @@ glance.MCA <- function(x, ...) {
   # result$rows <- length(x$row$coord)
   # result$cols <- length(x$col$coord)
 
-  class(result) <- c("cca", "tbl df", "tbl", "data.frame")
+  class(result) <- c("MCA_processed", "tbl df", "tbl", "data.frame")
   result
 }

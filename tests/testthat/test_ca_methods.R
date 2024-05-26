@@ -21,6 +21,27 @@ test_that("augment.CA works correctly", {
   expect_s3_class(augmented, "tbl")
 })
 
+test_that("augment.CA works for columns correctly", {
+  VERBOSE=FALSE
+
+  library(FactoMineR)
+  data(mortality)
+  dataset <- mortality[, 1:9]
+  res_ca <- CA(dataset, ncp = 2, graph=FALSE)
+  # augmented <- augment(res_ca, dataset, for_columns=TRUE)
+
+  # if (VERBOSE) {
+  #   cat("Augmented\n")
+  #   print(names(augmented))
+  #   print(augmented)
+  #   sep()
+  # }
+
+  # expect_type(augmented, "list")
+  # expect_length(augmented, 16)
+  # expect_s3_class(augmented, "tbl")
+})
+
 
 test_that("tidy.CA works correctly", {
   VERBOSE=FALSE
@@ -84,7 +105,7 @@ test_that("ggplot for CA works correctly", {
   res_glance <- glance(res_ca)
 
   res_screeplot <- screeplot(res_tidy)
-  res_rowplot <- rowplot.CA(res_augmented)
+  res_rowplot <- rowplot.CA_processed(res_augmented)
 
   if (ENABLED) {
     combined_plot <- grid.arrange(res_screeplot, res_rowplot, ncol=1, nrow=2) %>% 

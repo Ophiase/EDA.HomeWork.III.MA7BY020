@@ -37,7 +37,7 @@ augment.cca <- function(x, data_X, data_Y, for_columns=FALSE, ...) {
     data <- cbind(data, .wa=x$CCA$wa)
 
   result <- as_tibble(data)
-  class(result) <- c("cca", "tbl df", "tbl", "data.frame")
+  class(result) <- c("cca_processed", "tbl df", "tbl", "data.frame")
   result
 }
 
@@ -68,7 +68,7 @@ tidy.cca <- function(x, ...) {
   result$CCA.bitplot <- pad_na(colMeans(x$CCA$biplot), target_length)
   result$CCA.envcentre <- pad_na(mean(x$CCA$envcentre), target_length)
 
-  class(result) <- c("cca", "tbl df", "tbl", "data.frame")
+  class(result) <- c("cca_processed", "tbl df", "tbl", "data.frame")
   result
 }
 
@@ -97,6 +97,6 @@ glance.cca <- function(x, ...) {
   result <- cbind(result, qrank=x$CCA$qrank)
 
   result <- as_tibble(result)
-  class(result) <- c("cca", "tbl df", "tbl", "data.frame")
+  class(result) <- c("cca_processed", "tbl df", "tbl", "data.frame")
   result
 }

@@ -14,6 +14,13 @@ augment.CA <- function(x, data, for_columns=FALSE, ...) {
     stop("x is not a CA")
   }
 
+  if (for_columns) {
+    result <- as_tibble(t(data))
+    result$.coord <- unlist(x$col)
+    class(result) <- c("CA_processed", "tbl df", "tbl", "data.frame")
+    return(result)
+  }
+
   result <- as_tibble(data)
 
   # r$row
@@ -37,7 +44,7 @@ augment.CA <- function(x, data, for_columns=FALSE, ...) {
     }
   }
 
-  class(result) <- c("CA", "tbl df", "tbl", "data.frame")
+  class(result) <- c("CA_processed", "tbl df", "tbl", "data.frame")
   return(result)
 }
 
@@ -65,7 +72,7 @@ tidy.CA <- function(x, ...) {
   result$contrib.mean <- pad_na(colMeans(x$row$contrib), target_length)
   result$cos2.mean <- pad_na(colMeans(x$row$cos2), target_length)
 
-  class(result) <- c("CA", "tbl f", "tbl", "data.frame")
+  class(result) <- c("CA_processed", "tbl f", "tbl", "data.frame")
   result
 }
 
@@ -93,34 +100,34 @@ glance.CA <- function(x, ...) {
   result$rows <- length(x$row$coord)
   result$cols <- length(x$col$coord)
 
-  class(result) <- c("CA", "tbl df", "tbl", "data.frame")
+  class(result) <- c("CA_processed", "tbl df", "tbl", "data.frame")
   return(result)
 }
 
 # -----------------------------------------------------------------------------------
 # GRAPHICS
 
-#' @name screeplot.CA
-#' @title screeplot for CA
+#' @name screeplot.CA_processed
+#' @title screeplot for CA_processed
 #'
 #' @param tidy_output Result of tidy function over CA
 #' @param ... Additional arguments (not used).
 #'
 #' @return A ggplot
-screeplot.CA <- function(tidy_output, ...) {
+screeplot.CA_processed <- function(tidy_output, ...) {
   ggplot(tidy_output, aes(x = eigen, y = var.percentage)) +
     geom_bar(stat = "identity") +
     labs(title = "Scree Plot for CA", x = "Component", y = "Variance Explained (%)")
 }
 
-#' @name rowplot.CA
-#' @title rowplot for CA
+#' @name rowplot.CA_processed
+#' @title rowplot for CA_processed
 #'
 #' @param augment_output Result of the augment function over CA
 #' @param ... Additional arguments (not used).
 #'
 #' @return A ggplot
-rowplot.CA <- function(augment_output, ...) {
+rowplot.CA_processed <- function(augment_output, ...) {
   ggplot(augment_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], label = rownames(augment_output))) +
     geom_point() +
     geom_text(vjust = -0.5) +
