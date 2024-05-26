@@ -140,3 +140,17 @@ rowplot.CA_processed <- function(augment_output, ...) {
     geom_text(vjust = -0.5) +
     labs(title = "Row Plot for CA", x = "Dimension 1", y = "Dimension 2")
 }
+
+#' @name colplot.CA_processed
+#' @title colplot for CA_processed
+#'
+#' @param augment_output Result of the augment function over CA
+#' @param ... Additional arguments (not used).
+#'
+#' @return A ggplot
+colplot.CA_processed <- function(augment_output, ...) {
+  ggplot(augment_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], label = rownames(augment_output))) +
+    geom_point() +
+    geom_text(vjust = -0.5) +
+    labs(title = "Row Plot for CA", x = "Dimension 1", y = "Dimension 2")
+}

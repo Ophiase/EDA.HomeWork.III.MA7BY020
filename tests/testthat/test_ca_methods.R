@@ -79,29 +79,28 @@ test_that("glance.CA works correctly", {
 })
 
 test_that("ggplot for CA works correctly", {
+  ENABLED=TRUE
+
   library(gridExtra)
-
-  ENABLED=FALSE
-
   library(FactoMineR)
-  data(iris)
-  iris_df <- as.data.frame(
-    lapply(
-      iris[, 1:4], function(x) as.numeric(as.factor(x))
-    )
-  )
+  data(mortality)
+  dataset <- mortality[, 1:9]
+  res_ca <- CA(dataset, ncp = 2, graph=FALSE)
 
-  res_ca <- CA(iris_df, ncp = 5, graph=FALSE)
-
-  res_augmented <- augment(res_ca, iris_df)
+  res_augmented <- augment(res_ca, dataset)
+  res_augmented_cols <- augment(res_ca, dataset, for_columns=TRUE)
   res_tidy <- tidy(res_ca)
   res_glance <- glance(res_ca)
 
   res_screeplot <- screeplot(res_tidy)
   res_rowplot <- rowplot.CA_processed(res_augmented)
+  res_colplot <- colplot.CA_processed(res_augmented_cols)
 
   if (ENABLED) {
-    combined_plot <- grid.arrange(res_screeplot, res_rowplot, ncol=1, nrow=2) %>% 
+    combined_plot <- grid.arrange(
+      res_screeplot, res_rowplot,
+      res_colplot,
+      ncol=2, nrow=2) %>% 
       show()
   }
 
