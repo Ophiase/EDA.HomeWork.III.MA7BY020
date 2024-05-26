@@ -99,10 +99,10 @@ glance.CA <- function(x, ...) {
 # -----------------------------------------------------------------------------------
 # GRAPHICS
 
-#' @name screeplot_CA
+#' @name screeplot.CA
 #' @title screeplot for CA
 #'
-#' @param x Result of tidy function over CA
+#' @param tidy_output Result of tidy function over CA
 #' @param ... Additional arguments (not used).
 #'
 #' @return A ggplot
@@ -112,10 +112,10 @@ screeplot.CA <- function(tidy_output, ...) {
     labs(title = "Scree Plot for CA", x = "Component", y = "Variance Explained (%)")
 }
 
-#' @name rowplot_CA
+#' @name rowplot.CA
 #' @title rowplot for CA
 #'
-#' @param x Result of the augment function over CA
+#' @param augment_output Result of the augment function over CA
 #' @param ... Additional arguments (not used).
 #'
 #' @return A ggplot
