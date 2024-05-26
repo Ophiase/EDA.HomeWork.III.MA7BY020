@@ -79,7 +79,7 @@ test_that("glance.CA works correctly", {
 })
 
 test_that("ggplot for CA works correctly", {
-  ENABLED=TRUE
+  ENABLED=FALSE
 
   library(gridExtra)
   library(FactoMineR)

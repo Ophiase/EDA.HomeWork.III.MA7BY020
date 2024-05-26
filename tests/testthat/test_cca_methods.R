@@ -59,8 +59,6 @@ test_that("tidy.cca works correctly", {
   expect_s3_class(res_tidy, "tbl")
 })
 
-
-
 test_that("glance.cca works correctly", {
   VERBOSE = FALSE
   require(vegan)
