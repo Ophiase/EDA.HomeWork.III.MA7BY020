@@ -15,16 +15,27 @@ augment.cca <- function(x, data_X, data_Y, for_columns=FALSE, ...) {
     stop("x is not a cca")
   }
 
-  if (is.null(data_X) && is.null(data_Y)) {
-    stop("data_X ou data_Y cannot both be null")
+  if (is.null(data_X)) {
+    stop("data_X cannot be null")
   }
 
-  if (!is.null(data_X) && !is.null(data_Y)) {
+  if (for_columns) {
+    result <- data_X %>% 
+      t() %>%
+      as.data.frame() %>%
+      as_tibble()
+    
+    result$.colsum <- x$.colsum
+    result$.v <- x$CCA$v
+
+    class(result) <- c("cca_processed", "tbl df", "tbl", "data.frame")
+    return(result)
+  }
+
+  if (!is.null(data_Y)) {
     data <- as_tibble(cbind(data_X, data_Y))
-  } else if (!is.null(data_X)) {
-    data <- as_tibble(data_X)
   } else {
-    data <- as_tibble(data_Y)
+    data <- as_tibble(data_X)
   }
 
   if (!is.null(x$rowsum))

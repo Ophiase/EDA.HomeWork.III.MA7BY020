@@ -26,6 +26,20 @@ test_that("augment.cca works correctly", {
   expect_s3_class(res_augmented, "tbl")
 })
 
+test_that("augment.cca for columns works correctly", {
+  VERBOSE = FALSE
+  require(vegan)
+  data(varechem)
+  X <- varechem[, 1:7]
+  Y <- varechem[, 8:12]
+  res_cca <- cca(X, Y)
+  res_augmented <- augment(res_cca, X, Y, for_columns=TRUE)
+
+  expect_type(res_augmented, "list")
+  expect_length(res_augmented, 25)
+  expect_s3_class(res_augmented, "tbl")
+})
+
 
 test_that("tidy.cca works correctly", {
   VERBOSE = FALSE
