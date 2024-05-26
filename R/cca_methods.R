@@ -35,7 +35,9 @@ augment.cca <- function(x, data_X, data_Y, ...) {
   if (!is.null(x$rowsum))
     data <- cbind(data, .wa=x$CCA$wa)
 
-  return(as_tibble(data))
+  result <- as_tibble(data)
+  class(result) <- c("cca", "tbl_df", "tbl", "data.frame")
+  result
 }
 
 #' @name tidy.cca
@@ -65,7 +67,8 @@ tidy.cca <- function(x, ...) {
   result$CCA.bitplot <- pad_na(colMeans(x$CCA$biplot), target_length)
   result$CCA.envcentre <- pad_na(mean(x$CCA$envcentre), target_length)
 
-  return(result)
+  class(result) <- c("cca", "tbl_df", "tbl", "data.frame")
+  result
 }
 
 #' @name glance.cca
@@ -92,5 +95,7 @@ glance.cca <- function(x, ...) {
   result <- cbind(result, rank=x$CCA$rank)
   result <- cbind(result, qrank=x$CCA$qrank)
 
-  return(as_tibble(result))
+  result <- as_tibble(result)
+  class(result) <- c("cca", "tbl_df", "tbl", "data.frame")
+  result
 }

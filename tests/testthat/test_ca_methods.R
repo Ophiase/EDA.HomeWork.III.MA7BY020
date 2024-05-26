@@ -96,3 +96,33 @@ test_that("glance.CA works correctly", {
   expect_s3_class(res_glance, "tbl")
 
 })
+
+test_that("ggplot for CA works correctly", {
+  library(gridExtra)
+
+  ENABLED=TRUE
+
+  library(FactoMineR)
+  data(iris)
+  iris_df <- as.data.frame(
+    lapply(
+      iris[, 1:4], function(x) as.numeric(as.factor(x))
+    )
+  )
+
+  res_ca <- CA(iris_df, ncp = 5, graph=FALSE)
+
+  res_augmented <- augment(res_ca, iris_df)
+  res_tidy <- tidy(res_ca)
+  res_glance <- glance(res_ca)
+
+  res_screeplot <- screeplot(res_tidy)
+  res_rowplot <- rowplot.CA(res_augmented)
+
+  if (ENABLED) {
+    combined_plot <- grid.arrange(res_screeplot, res_rowplot, ncol=1, nrow=2) %>% 
+      show()
+  }
+
+  expect_true(TRUE)
+})
