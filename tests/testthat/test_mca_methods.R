@@ -100,3 +100,22 @@ test_that("ggplot for MCA works correctly", {
 
   expect_true(TRUE)
 })
+
+test_that("autoplot for MCA works correctly", {
+  ENABLED=TRUE
+
+  library(FactoMineR)
+  library(broom)
+  data(poison)
+  dataset <- poison
+  res_mca <- MCA(dataset, quanti.sup = 1:2, quali.sup = 3:4, graph = FALSE)
+
+  # availibles types : all, scree, row, col, symmetric
+  plot = autoplot(res_mca, type="all") 
+  
+  if (ENABLED) {
+    plot %>% show()
+  }
+
+  expect_true(TRUE)
+})

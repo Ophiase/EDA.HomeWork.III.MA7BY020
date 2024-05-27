@@ -84,6 +84,7 @@ test_that("ggplot for CA works correctly", {
   library(gridExtra)
   library(FactoMineR)
   data(mortality)
+  library(ggpubr)
   dataset <- mortality[, 1:9]
   res_ca <- CA(dataset, ncp = 2, graph=FALSE)
 
@@ -98,11 +99,31 @@ test_that("ggplot for CA works correctly", {
   res_symmetricplot <- symmetricplot.CA_processed(res_augmented, res_augmented_cols)
 
   if (ENABLED) {
-    combined_plot <- grid.arrange(
-      res_screeplot, res_symmetricplot,
-      res_rowplot, res_colplot,
-      ncol=2, nrow=2) %>% 
-      show()
+    combined_plot <- ggarrange(
+      res_screeplot, res_rowplot,
+      res_colplot, res_symmetricplot, 
+      ncol = 2, nrow = 2)
+
+    combined_plot %>% show()
+  }
+
+  expect_true(TRUE)
+})
+
+test_that("autoplot for CA works correctly", {
+  ENABLED=FALSE
+
+  library(gridExtra)
+  library(FactoMineR)
+  data(mortality)
+  dataset <- mortality[, 1:9]
+  res_ca <- CA(dataset, ncp = 2, graph=FALSE)
+
+  # availibles types : all, scree, row, col, symmetric
+  plot = autoplot(res_ca, type="all") 
+  
+  if (ENABLED) {
+    plot %>% show()
   }
 
   expect_true(TRUE)

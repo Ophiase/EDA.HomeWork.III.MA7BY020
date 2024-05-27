@@ -128,7 +128,6 @@ screeplot.CA_processed <- function(tidy_output, ...) {
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
 }
 
-
 #' @name rowplot.CA_processed
 #' @title rowplot for CA_processed
 #'
@@ -185,4 +184,47 @@ symmetricplot.CA_processed <- function(row_output, col_output, ...) {
     theme_minimal()
 }
 
+#' @name autoplot.CA_processed
+#' @title Autoplot for CA_processed
+#' @description Automatically generate plots for CA_processed object
+#'
+#' @param x An object of class `CA` from the FactoMineR package.
+#' @param type Type of plot to generate. Options are "all", "scree", "row", "col", "symmetric". Defaults to "all".
+#' @param ... Additional arguments (not used).
+#'
+#' @return A ggplot object or a combined grid of ggplot objects
+#' 
+#' @export 
+#' @method autoplot CA
+autoplot.CA <- function(x, type = c("all", "scree", "row", "col", "symmetric"), ...) {  
+  type <- match.arg(type)
+  
+  tidy_output <- tidy.CA(x)
+  augment_output <- augment.CA(x, x$call$X)
+  augment_output_col <- augment.CA(x, x$call$X, for_columns=TRUE)
+  
+  plots <- list()
 
+  if (type == "all" || type == "scree") {
+    plots <- append(plots, list(screeplot(tidy_output)))
+  }
+  
+  if (type == "all" || type == "row") {
+    plots <- append(plots, list(rowplot.CA_processed(augment_output)))
+  } 
+  
+  if (type == "all" || type == "col") {
+    plots <- append(plots, list(colplot.CA_processed(augment_output_col)))
+  } 
+  
+  if (type == "all" || type == "symmetric") {
+    plots <- append(plots, list(symmetricplot.CA_processed(augment_output, augment_output_col)))
+  }
+
+  if (type == "all") {
+    combined_plot <- do.call(ggarrange, c(plots, ncol=2, nrow=2))
+    return(combined_plot)
+  } else {
+    return(plots[[1]])
+  }
+}

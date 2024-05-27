@@ -18,5 +18,7 @@ Imports:
   tidyr (>= 1.0.0),
   vegan,
   dplyr,
-  ggplot2
+  ggplot2,
+  gridExtra,
+  ggpubr
 
