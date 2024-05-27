@@ -160,7 +160,7 @@ colplot.CA_processed <- function(augment_output, ...) {
   ggplot(augment_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], label = rownames(augment_output))) +
     geom_point() +
     geom_text(vjust = -0.5) +
-    labs(title = "Row Plot for CA", x = "Dimension 1", y = "Dimension 2")
+    labs(title = "Col Plot for CA", x = "Dimension 1", y = "Dimension 2")
 }
 
 #' @name symmetricplot.CA_processed
@@ -184,3 +184,5 @@ symmetricplot.CA_processed <- function(row_output, col_output, ...) {
     scale_color_manual(values = c("Rows" = "blue", "Columns" = "red")) +
     theme_minimal()
 }
+
+

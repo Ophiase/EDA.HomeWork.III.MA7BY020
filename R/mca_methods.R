@@ -163,7 +163,7 @@ colplot.MCA_processed <- function(augment_output, ...) {
   ggplot(augment_output, aes(x = .coord.1, y = .coord.2, label = rownames(augment_output))) +
     geom_point() +
     geom_text(vjust = -0.5) +
-    labs(title = "Row Plot for MCA", x = "Dimension 1", y = "Dimension 2")
+    labs(title = "Col Plot for MCA", x = "Dimension 1", y = "Dimension 2")
 }
 
 #' @name symmetricplot.MCA_processed

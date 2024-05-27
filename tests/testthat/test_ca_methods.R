@@ -99,8 +99,8 @@ test_that("ggplot for CA works correctly", {
 
   if (ENABLED) {
     combined_plot <- grid.arrange(
-      res_screeplot, res_rowplot,
-      res_colplot, res_symmetricplot,
+      res_screeplot, res_symmetricplot,
+      res_rowplot, res_colplot,
       ncol=2, nrow=2) %>% 
       show()
   }

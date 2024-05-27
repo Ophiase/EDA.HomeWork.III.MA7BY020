@@ -76,3 +76,34 @@ test_that("glance.cca works correctly", {
   expect_length(res_glance, 9)
   expect_s3_class(res_glance, "tbl")
 })
+
+test_that("glance.cca works correctly", {
+  ENABLED = FALSE
+  
+  require(vegan)
+  data(varechem)
+  X <- varechem[, 1:7]
+  Y <- varechem[, 8:14]
+  res_cca <- cca(X, Y)
+
+  res_augmented <- augment(res_cca, X, Y)
+  res_augmented_cols <- augment(res_cca, X, Y, for_columns=TRUE)
+  res_tidy <- tidy(res_cca)
+  res_glance <- glance(res_cca)
+
+  res_screeplot <- screeplot(res_tidy)
+  res_rowplot <- rowplot.cca_processed(res_augmented)
+  res_colplot <- colplot.cca_processed(res_augmented_cols)
+  res_symmetricplot <- symmetricplot.cca_processed(res_augmented, res_augmented_cols)
+
+
+  if (ENABLED) {
+    combined_plot <- grid.arrange(
+      res_screeplot, res_symmetricplot, 
+      res_rowplot, res_colplot, 
+      ncol=2, nrow=2) %>% 
+      show()
+  }
+
+  expect_true(TRUE)
+})
