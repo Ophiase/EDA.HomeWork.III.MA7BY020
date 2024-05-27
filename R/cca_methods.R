@@ -26,7 +26,7 @@ augment.cca <- function(x, data_X, data_Y, for_columns=FALSE, ...) {
       as_tibble()
     
     result$.colsum <- x$.colsum
-    result$.v <- x$CCA$v
+    result$.coord <- x$CCA$v
 
     class(result) <- c("cca_processed", "tbl df", "tbl", "data.frame")
     return(result)
@@ -41,9 +41,9 @@ augment.cca <- function(x, data_X, data_Y, for_columns=FALSE, ...) {
   if (!is.null(x$rowsum))
     data <- cbind(data, .rowsum=x$rowsum)
   if (!is.null(x$Ybar))
-    data <- cbind(data, .u=x$Ybar)  
+    data <- cbind(data, .Ybar=x$Ybar)  
   if (!is.null(x$rowsum))
-    data <- cbind(data, .w=x$CCA$u)
+    data <- cbind(data, .coord=x$CCA$u)
   if (!is.null(x$rowsum))
     data <- cbind(data, .wa=x$CCA$wa)
 
@@ -68,9 +68,9 @@ tidy.cca <- function(x, ...) {
 
   result <- x$CCA$eig %>%
     as.data.frame() %>%
-    rownames_to_column(var = "dimension") %>%
+    rownames_to_column(var = "eigen") %>%
     as_tibble() %>%
-    setNames(c("dimension", "eigen_value"))
+    setNames(c("eigen", "value"))
 
   target_length = dim(result)[1]
 
@@ -111,3 +111,78 @@ glance.cca <- function(x, ...) {
   class(result) <- c("cca_processed", "tbl df", "tbl", "data.frame")
   result
 }
+
+# -----------------------------------------------------------------------------------
+# GRAPHICS
+
+#' @name screeplot.cca_processed
+#' @title screeplot for cca_processed
+#'
+#' @param tidy_output Result of tidy function over cca
+#' @param ... Additional arguments (not used).
+#'
+#' @return A ggplot
+screeplot.cca_processed <- function(tidy_output, ...) {
+  ggplot(tidy_output, aes(x = reorder(eigen, value), y = value)) +
+    geom_bar(stat = "identity") +
+    labs(title = "Scree Plot for CCA", x = "Component", y = "Variance Explained (%)") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+}
+
+#' @name rowplot.cca_processed
+#' @title rowplot for cca_processed
+#'
+#' @param augment_output Result of the augment function over cca
+#' @param ... Additional arguments (not used).
+#'
+#' @return A ggplot
+#' 
+#' @export 
+#' @method rowplot cca_processed
+rowplot.cca_processed <- function(augment_output, ...) {
+  ggplot(augment_output, aes(x = .coord.CCA1, y = .coord.CCA2, label = rownames(augment_output))) +
+    geom_point() +
+    geom_text(vjust = -0.5) +
+    labs(title = "Row Plot for cca", x = "Dimension 1", y = "Dimension 2")
+}
+
+#' @name colplot.cca_processed
+#' @title colplot for cca_processed
+#'
+#' @param augment_output Result of the augment function over cca
+#' @param ... Additional arguments (not used).
+#'
+#' @return A ggplot
+#' 
+#' @export 
+#' @method colplot cca_processed
+colplot.cca_processed <- function(augment_output, ...) {
+  ggplot(augment_output, aes(x = .coord[, "CCA1"], y = .coord[, "CCA2"], label = rownames(augment_output))) +
+    geom_point() +
+    geom_text(vjust = -0.5) +
+    labs(title = "Col Plot for cca", x = "Dimension 1", y = "Dimension 2")
+}
+
+#' @name symmetricplot.cca_processed
+#' @title Symmetric plot for cca_processed
+#'
+#' @param row_output Result of the augment function over cca for rows
+#' @param col_output Result of the augment function over cca for columns
+#' @param ... Additional arguments (not used).
+#'
+#' @return A ggplot
+#' 
+#' @export 
+#' @method symmetricplot cca_processed
+symmetricplot.cca_processed <- function(row_output, col_output, ...) {
+  ggplot() +
+    geom_point(data = row_output, aes(x = .coord.CCA1, y = .coord.CCA2, color = "Rows")) +
+    geom_point(data = col_output, aes(x = .coord[, "CCA1"], y = .coord[, "CCA2"], color = "Columns")) +
+    geom_text(data = row_output, aes(x = .coord.CCA1, y = .coord.CCA2, label = rownames(row_output)), vjust = -0.5, color = "blue") +
+    geom_text(data = col_output, aes(x = .coord[, "CCA1"], y = .coord[, "CCA2"], label = rownames(col_output)), vjust = -0.5, color = "red") +
+    labs(title = "Symmetric Plot for cca", x = "Dimension 1", y = "Dimension 2") +
+    scale_color_manual(values = c("Rows" = "blue", "Columns" = "red")) +
+    theme_minimal()
+}
+
+

@@ -122,10 +122,12 @@ glance.CA <- function(x, ...) {
 #'
 #' @return A ggplot
 screeplot.CA_processed <- function(tidy_output, ...) {
-  ggplot(tidy_output, aes(x = eigen, y = var.percentage)) +
+  ggplot(tidy_output, aes(x = reorder(eigen, var.percentage), y = var.percentage)) +
     geom_bar(stat = "identity") +
-    labs(title = "Scree Plot for CA", x = "Component", y = "Variance Explained (%)")
+    labs(title = "Scree Plot for CA", x = "Component", y = "Variance Explained (%)") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
 }
+
 
 #' @name rowplot.CA_processed
 #' @title rowplot for CA_processed
@@ -158,7 +160,7 @@ colplot.CA_processed <- function(augment_output, ...) {
   ggplot(augment_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], label = rownames(augment_output))) +
     geom_point() +
     geom_text(vjust = -0.5) +
-    labs(title = "Row Plot for CA", x = "Dimension 1", y = "Dimension 2")
+    labs(title = "Col Plot for CA", x = "Dimension 1", y = "Dimension 2")
 }
 
 #' @name symmetricplot.CA_processed
@@ -182,3 +184,5 @@ symmetricplot.CA_processed <- function(row_output, col_output, ...) {
     scale_color_manual(values = c("Rows" = "blue", "Columns" = "red")) +
     theme_minimal()
 }
+
+

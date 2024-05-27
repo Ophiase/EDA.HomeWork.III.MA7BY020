@@ -21,7 +21,7 @@ augment.MCA <- function(x, data, for_columns=FALSE, ...) {
       rownames_to_column(var = "column") %>% 
       as_tibble() %>% 
       setNames(c("column", "marge")) %>%
-      cbind(dim=x$svd$V) %>%
+      cbind(.coord=x$svd$V) %>%
       as_tibble()
     
     class(result) <- c("MCA_processed", "tbl df", "tbl", "data.frame")
@@ -113,4 +113,77 @@ glance.MCA <- function(x, ...) {
 
   class(result) <- c("MCA_processed", "tbl df", "tbl", "data.frame")
   result
+}
+
+# -----------------------------------------------------------------------------------
+# GRAPHICS
+
+#' @name screeplot.MCA_processed
+#' @title screeplot for MCA_processed
+#'
+#' @param tidy_output Result of tidy function over MCA
+#' @param ... Additional arguments (not used).
+#'
+#' @return A ggplot
+screeplot.MCA_processed <- function(tidy_output, ...) {
+  ggplot(tidy_output, aes(x = reorder(term, var.percentage), y = var.percentage)) +
+    geom_bar(stat = "identity") +
+    labs(title = "Scree Plot for CA", x = "Component", y = "Variance Explained (%)") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+}
+
+#' @name rowplot.MCA_processed
+#' @title rowplot for MCA_processed
+#'
+#' @param augment_output Result of the augment function over MCA
+#' @param ... Additional arguments (not used).
+#'
+#' @return A ggplot
+#' 
+#' @export 
+#' @method rowplot MCA_processed
+rowplot.MCA_processed <- function(augment_output, ...) {
+  ggplot(augment_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], label = rownames(augment_output))) +
+    geom_point() +
+    geom_text(vjust = -0.5) +
+    labs(title = "Row Plot for MCA", x = "Dimension 1", y = "Dimension 2")
+}
+
+#' @name colplot.MCA_processed
+#' @title colplot for MCA_processed
+#'
+#' @param augment_output Result of the augment function over MCA
+#' @param ... Additional arguments (not used).
+#'
+#' @return A ggplot
+#' 
+#' @export 
+#' @method colplot MCA_processed
+colplot.MCA_processed <- function(augment_output, ...) {
+  ggplot(augment_output, aes(x = .coord.1, y = .coord.2, label = rownames(augment_output))) +
+    geom_point() +
+    geom_text(vjust = -0.5) +
+    labs(title = "Col Plot for MCA", x = "Dimension 1", y = "Dimension 2")
+}
+
+#' @name symmetricplot.MCA_processed
+#' @title Symmetric plot for MCA_processed
+#'
+#' @param row_output Result of the augment function over MCA for rows
+#' @param col_output Result of the augment function over MCA for columns
+#' @param ... Additional arguments (not used).
+#'
+#' @return A ggplot
+#' 
+#' @export 
+#' @method symmetricplot MCA_processed
+symmetricplot.MCA_processed <- function(row_output, col_output, ...) {
+  ggplot() +
+    geom_point(data = row_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], color = "Rows")) +
+    geom_point(data = col_output, aes(x = .coord.1, y = .coord.2, color = "Columns")) +
+    geom_text(data = row_output, aes(x = .coord[, "Dim 1"], y = .coord[, "Dim 2"], label = rownames(row_output)), vjust = -0.5, color = "blue") +
+    geom_text(data = col_output, aes(x = .coord.1, y = .coord.2, label = rownames(col_output)), vjust = -0.5, color = "red") +
+    labs(title = "Symmetric Plot for MCA", x = "Dimension 1", y = "Dimension 2") +
+    scale_color_manual(values = c("Rows" = "blue", "Columns" = "red")) +
+    theme_minimal()
 }
