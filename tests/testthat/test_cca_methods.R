@@ -107,3 +107,22 @@ test_that("glance.cca works correctly", {
 
   expect_true(TRUE)
 })
+
+test_that("autoplot for CCA works correctly", {
+  ENABLED = FALSE
+  
+  require(vegan)
+  data(varechem)
+  X <- varechem[, 1:7]
+  Y <- varechem[, 8:14]
+  res_cca <- cca(X, Y)
+
+  # availibles types : all, scree, row, col, symmetric
+  plot = autoplot(res_cca, X, Y, type="all") 
+  
+  if (ENABLED) {
+    plot %>% show()
+  }
+
+  expect_true(TRUE)
+})

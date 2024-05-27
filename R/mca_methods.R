@@ -128,7 +128,7 @@ glance.MCA <- function(x, ...) {
 screeplot.MCA_processed <- function(tidy_output, ...) {
   ggplot(tidy_output, aes(x = reorder(term, var.percentage), y = var.percentage)) +
     geom_bar(stat = "identity") +
-    labs(title = "Scree Plot for CA", x = "Component", y = "Variance Explained (%)") +
+    labs(title = "Scree Plot for MCA", x = "Component", y = "Variance Explained (%)") +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
 }
 
@@ -186,4 +186,49 @@ symmetricplot.MCA_processed <- function(row_output, col_output, ...) {
     labs(title = "Symmetric Plot for MCA", x = "Dimension 1", y = "Dimension 2") +
     scale_color_manual(values = c("Rows" = "blue", "Columns" = "red")) +
     theme_minimal()
+}
+
+#' @name autoplot.MCA_processed
+#' @title Autoplot for MCA_processed
+#' @description Automatically generate plots for MCA_processed object
+#'
+#' @param x An object of class `MCA` from the FactoMineR package.
+#' @param type Type of plot to generate. Options are "all", "scree", "row", "col", "symmetric". Defaults to "all".
+#' @param ... Additional arguments (not used).
+#'
+#' @return A ggplot object or a combined grid of ggplot objects
+#' 
+#' @export 
+#' @method autoplot MCA
+autoplot.MCA <- function(x, type = c("all", "scree", "row", "col", "symmetric"), ...) {  
+  type <- match.arg(type)
+  
+  tidy_output <- tidy(x)
+  augment_output <- augment(x, x$call$X)
+  augment_output_col <- augment(x, x$call$X, for_columns=TRUE)
+  
+  plots <- list()
+
+  if (type == "all" || type == "scree") {
+    plots <- append(plots, list(screeplot(tidy_output)))
+  }
+  
+  if (type == "all" || type == "row") {
+    plots <- append(plots, list(rowplot.MCA_processed(augment_output)))
+  } 
+  
+  if (type == "all" || type == "col") {
+    plots <- append(plots, list(colplot.MCA_processed(augment_output_col)))
+  } 
+  
+  if (type == "all" || type == "symmetric") {
+    plots <- append(plots, list(symmetricplot.MCA_processed(augment_output, augment_output_col)))
+  }
+
+  if (type == "all") {
+    combined_plot <- do.call(ggarrange, c(plots, ncol=2, nrow=2))
+    return(combined_plot)
+  } else {
+    return(plots[[1]])
+  }
 }
