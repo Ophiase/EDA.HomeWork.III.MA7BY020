@@ -6,6 +6,10 @@ pad_na <- function(values, target_length) {
   c(values, rep(NA, target_length - length(values)))
 }
 
+standart_columns <- function(df) {
+  paste0("dim.", seq_along(colnames(df)))
+}
+
 
 #' @name rowplot
 #' @title Row plot
