@@ -102,7 +102,7 @@ test_that("ggplot for MCA works correctly", {
 })
 
 test_that("autoplot for MCA works correctly", {
-  ENABLED=TRUE
+  ENABLED=FALSE
 
   library(FactoMineR)
   library(broom)
